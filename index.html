@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#3a2a1f">
+    <title>Libretto Marcia Francescana 2026</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root{--ink:#2b2118;--habit:#4a3222;--primary:#4a3222;--bar-bg:#3a2a1f;--cord:#a8834f;--cord-dark:#8a5a1e;
+          --bg:#f6f4ef;--card:#fffefb;--line:#e4dccd;--text-muted:#6b5d50;
+          --rit-bg:#eef1e6;--rit-line:#6b8a4a;--rit-text:#2f3f1f;--rit-tag:#3f5f2a;--sosta-bg:#f1e9da;
+          --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+          --sans:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+          --bar:calc(60px + env(safe-area-inset-top,0px))}
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+        body{font:400 1rem/1.75 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+        body.menu-open{overflow:hidden}
+        button,a,[data-page]{touch-action:manipulation}
+        :focus-visible{outline:3px solid #b45309;outline-offset:2px}
+        .topbar :focus-visible{outline-color:#f2c46d}
+        .sezione-titolo:focus,[tabindex="-1"]:focus{outline:none}
+        .skip-link{position:absolute;left:16px;top:-70px;z-index:2000;background:var(--habit);color:#fff;padding:12px 20px;border-radius:6px;font-weight:700;text-decoration:none}
+        .skip-link:focus{top:12px}
+
+        /* Barra superiore */
+        .topbar{position:fixed;top:0;left:0;right:0;height:var(--bar);padding-top:env(safe-area-inset-top,0px);background:var(--bar-bg);color:#f6efe3;z-index:1000;border-bottom:3px solid var(--cord)}
+        .topbar-inner{height:100%;max-width:1100px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .brand{font:600 22px/1 var(--serif);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .toggle-btn{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid rgba(246,239,227,.45);border-radius:999px;background:transparent;color:#f6efe3;font:600 15px/1 var(--sans);cursor:pointer;flex-shrink:0;transition:background .2s}
+        .toggle-btn:hover{background:rgba(255,255,255,.1)}
+        .toggle-btn svg{transition:transform .3s}
+        .toggle-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+        /* Indice a scomparsa dall'alto */
+        .overlay{display:none;position:fixed;top:var(--bar);left:0;right:0;bottom:0;background:rgba(43,33,24,.45);z-index:998}
+        .overlay.active{display:block}
+        .sidebar{position:fixed;top:var(--bar);left:0;right:0;max-height:calc(100vh - var(--bar));max-height:calc(100dvh - var(--bar));overflow-y:auto;overscroll-behavior:contain;
+          background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 18px 40px rgba(43,33,24,.18);
+          padding:20px max(20px,env(safe-area-inset-right)) 28px max(20px,env(safe-area-inset-left));z-index:999;
+          transform:translateY(-105%);visibility:hidden;transition:transform .35s cubic-bezier(.16,1,.3,1),visibility 0s linear .35s}
+        .sidebar.active{transform:none;visibility:visible;transition-delay:0s}
+        .sidebar li{list-style:none}
+        .sidebar>ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 40px;max-width:1100px;margin:0 auto}
+        button.sidebar-categoria{display:block;width:100%;min-height:46px;padding:8px 0;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;font:700 1.55rem/1.2 var(--serif);color:var(--habit);cursor:pointer}
+        button.sidebar-categoria:hover,.sidebar-categoria[aria-current="page"]{color:var(--cord-dark);border-bottom-color:var(--cord-dark)}
+        .sub-menu{margin:6px 0 10px}
+        .sidebar a{display:block;padding:10px 4px;color:var(--ink);text-decoration:none;font-size:.95rem;font-weight:500;border-radius:4px}
+        .sidebar a:hover{color:var(--cord-dark);text-decoration:underline}
+        .fs-control{display:flex;align-items:center;justify-content:flex-end;gap:8px;max-width:1100px;margin:0 auto 14px}
+        .fs-control button{min-width:48px;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--habit);font:700 16px var(--sans);cursor:pointer}
+        .fs-control button:disabled{opacity:.4;cursor:default}
+        .fs-control span{min-width:3.2em;text-align:center;font-size:.85rem;font-weight:600;color:var(--text-muted)}
+
+        /* Contenuto */
+        .wrapper{min-height:100vh;min-height:100dvh}
+        .content{max-width:760px;margin:0 auto;padding:calc(var(--bar) + 32px) max(20px,env(safe-area-inset-right)) max(64px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+        .pagina{display:none}
+        .pagina.active{display:block;animation:entra .5s ease-out}
+        @keyframes entra{from{opacity:0}to{opacity:1}}
+        .ancora{display:block;scroll-margin-top:calc(var(--bar) + 16px)}
+        .sezione-titolo{font:700 clamp(2.1rem,7vw,3rem)/1.1 var(--serif);color:var(--habit);margin-bottom:26px}
+        .sezione-titolo::after{content:"";display:block;width:54px;height:10px;margin-top:14px;background:radial-gradient(circle,var(--cord-dark) 3.5px,transparent 4px) 0 50%/18px 10px repeat-x}
+        .testo-unico{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:clamp(22px,5vw,44px);font-size:1.0625rem}
+        .testo-unico p{margin-bottom:1.2rem}
+        hr{border:0;border-top:1px solid var(--line);margin:32px 0}
+        .sotto-titolo{font:700 1.75rem/1.2 var(--serif);color:var(--habit);margin-bottom:12px}
+
+        .hero-banner{text-align:center;padding:4px 0 28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+        .hero-titolo{font:700 clamp(2rem,8vw,3.1rem)/1.05 var(--serif);letter-spacing:.03em;color:var(--habit);overflow-wrap:anywhere}
+        .hero-sottotitolo{font:italic 600 1.55rem/1.3 var(--serif);color:var(--cord-dark);margin-top:10px}
+        .hero-slogan{font:italic 500 1.25rem/1.4 var(--serif);color:var(--text-muted);margin-top:14px}
+
+        .percorso-container{margin-top:8px}
+        .percorso-titolo{font:700 1.75rem/1.2 var(--serif);color:var(--habit);margin-bottom:18px}
+        .percorso-tappe-verticale{position:relative;display:flex;flex-direction:column}
+        .percorso-tappe-verticale::before{content:"";position:absolute;left:8px;top:22px;bottom:22px;width:2px;background:var(--cord)}
+        .tappa-box{position:relative;padding:10px 0 10px 40px;font-weight:600;font-size:1.05rem;line-height:1.4;color:var(--ink)}
+        .tappa-box::before{content:"";position:absolute;left:1px;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;background:var(--card);border:3px solid var(--cord-dark)}
+        .tappa-1::before,.tappa-6::before{background:var(--cord-dark)}
+        .tappa-box small{display:block;font-weight:500;color:var(--text-muted);font-size:.9rem}
+        .freccia-giu{display:none}
+
+        .qr-section{margin-top:36px;padding:28px 20px;text-align:center;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+        .qr-section h4{font:700 1.6rem/1.2 var(--serif);color:var(--habit);margin-bottom:8px}
+        .qr-section a{color:var(--habit);font-weight:700;word-break:break-all}
+        .qr-container{display:flex;justify-content:center;margin:18px 0}
+        .qr-container img{width:160px;height:160px;border:8px solid #fff;border-radius:4px}
+
+        .titolo-canto{font:700 clamp(1.7rem,5.5vw,2.1rem)/1.15 var(--serif);color:var(--habit);margin:46px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+        .ancora:first-child+.titolo-canto{margin-top:0}
+        .ritornello{background:var(--rit-bg);border-left:3px solid var(--rit-line);color:var(--rit-text);padding:16px 20px;margin:18px 0;border-radius:0 4px 4px 0;font-weight:600}
+        .rit-tag{color:var(--rit-tag);font-weight:700;font-size:.8rem;letter-spacing:.14em}
+        .sosta-box{background:var(--sosta-bg);border-left:3px solid var(--cord-dark);padding:16px 20px;margin:24px 0;border-radius:0 4px 4px 0}
+
+        .page-nav-container{display:flex;gap:14px;margin-top:52px;padding-top:28px;border-top:1px solid var(--line)}
+        .page-nav-container>div:empty{flex:1}
+        .nav-card{flex:1;display:flex;align-items:center;gap:14px;min-height:64px;padding:16px 18px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:inherit;text-decoration:none;transition:border-color .2s,background .2s}
+        .nav-card:hover{border-color:var(--cord-dark);background:var(--bg)}
+        .nav-card.prev{justify-content:flex-start;text-align:left}
+        .nav-card.next{justify-content:flex-end;text-align:right}
+        .nav-arrow{font-size:1.4rem;color:var(--cord-dark);flex-shrink:0}
+        .nav-content{display:flex;flex-direction:column}
+        .nav-label{font-size:.8rem;font-weight:500;color:var(--text-muted)}
+        .nav-title{font:700 1.35rem/1.2 var(--serif);color:var(--habit)}
+
+        @media(max-width:640px){.page-nav-container{flex-direction:column}.page-nav-container>div:empty{display:none}}
+        @media(max-width:380px){.brand{font-size:19px}}
+        @media(min-width:1400px){html{font-size:106.25%}}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
+    
+        /* ===== Palette armonica con sfumature (tramonto d'Assisi) ===== */
+        :root{--bg:#f3eee4;--card:#fffdf8;--line:#e6d9bf;--sand-1:#fbf3e1;--sand-2:#f1e2c3;--shadow:rgba(74,50,34,.08)}
+        body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+          background:radial-gradient(120% 55% at 50% 0%,#fdf6e6 0%,rgba(253,246,230,0) 70%),linear-gradient(180deg,#f6f0e3 0%,#eee6d6 100%)}
+
+        .topbar{background:linear-gradient(100deg,#2c2017 0%,#4a3222 55%,#6a4629 100%);border-bottom:0}
+        .topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#8a5a1e,#e2bb72 50%,#8a5a1e)}
+        .toggle-btn{background:linear-gradient(135deg,#e6c483,#b98b47);border-color:transparent;color:#2b2118}
+        .toggle-btn:hover{background:linear-gradient(135deg,#efd196,#c79a55)}
+
+        .sidebar{background:linear-gradient(180deg,#fffdf8 0%,#f7f0e0 100%);border-bottom:0;box-shadow:0 22px 44px rgba(44,32,23,.22)}
+        button.sidebar-categoria{border-bottom:0;background:linear-gradient(90deg,#b98b47,rgba(185,139,71,0)) left bottom/100% 1px no-repeat}
+        .fs-control button{background:linear-gradient(180deg,#fffefa,#f4ead5)}
+
+        .sezione-titolo,.hero-titolo{background:linear-gradient(100deg,#3a2a1f 0%,#6d4523 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        @media(forced-colors:active){.sezione-titolo,.hero-titolo{background:none;-webkit-text-fill-color:currentColor}}
+
+        .testo-unico{background:linear-gradient(180deg,#fffefa 0%,#fbf6ea 100%);border-radius:10px;box-shadow:0 10px 30px var(--shadow)}
+        .hero-banner{background:linear-gradient(160deg,var(--sand-1) 0%,var(--sand-2) 100%);border:1px solid #e3cf9f;border-radius:10px;padding:28px 18px 26px;margin-bottom:30px}
+        .hero-sottotitolo{color:#7a4f1a}
+        .hero-slogan{color:#6b4a26}
+        .titolo-canto{border-bottom:1px solid;border-image:linear-gradient(90deg,#b98b47,rgba(185,139,71,0)) 1}
+        .ritornello{background:linear-gradient(90deg,#e0e7cc 0%,#f0f4e6 100%);border-left-color:#6b8a4a;border-radius:0 8px 8px 0}
+        .sosta-box{background:linear-gradient(90deg,#efdfbf 0%,#f8f0de 100%);border-left-color:#b98b47;border-radius:0 8px 8px 0}
+
+        .percorso-tappe-verticale::before{background:linear-gradient(180deg,#e2bb72,#8a5a1e)}
+        .tappa-box::before{border-color:#a8763a}
+        .tappa-1::before,.tappa-6::before{background:linear-gradient(135deg,#e2bb72,#8a5a1e);border-color:#8a5a1e}
+
+        .qr-section{background:linear-gradient(160deg,#fbf3e1,#f3e6c9);border-color:#e3cf9f;border-radius:10px}
+        .nav-card{background:linear-gradient(180deg,#fffefa,#f8f1e1);border-radius:10px;box-shadow:0 4px 14px var(--shadow)}
+        .nav-card:hover{background:linear-gradient(180deg,#fffaf0,#f3e6c9);border-color:#b98b47}
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+
+    <!-- Pulsante Menu Mobile -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <span class="brand">Marcia Francescana 2026</span>
+            <button type="button" class="toggle-btn" id="toggleBtn" aria-controls="sidebar" aria-expanded="false" aria-label="Apri indice"><span>Indice</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+    </header>
+
+    <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+    <div class="wrapper">
+        
+        <!-- SIDEBAR -->
+        <nav class="sidebar" id="sidebar" aria-label="Indice del libretto">
+            <div class="fs-control" role="group" aria-label="Dimensione del testo">
+                <button type="button" id="fsMinus" aria-label="Riduci il testo">A−</button>
+                <span id="fsLabel" aria-live="polite">100%</span>
+                <button type="button" id="fsPlus" aria-label="Ingrandisci il testo">A+</button>
+            </div>
+            <ul>
+                <li><button type="button" class="sidebar-categoria cat-pres" data-page="presentazione"><span>Presentazione</span></button>
+                </li>
+                <li><button type="button" class="sidebar-categoria cat-lett" data-page="letture"><span>Letture marcia</span></button>
+                    <ul class="sub-menu">
+                        <li><a href="#letture/sosta1" data-page="letture" data-anchor="sosta1">1^ Sosta (P.zza Indipendenza)</a></li>
+                        <li><a href="#letture/sosta2" data-page="letture" data-anchor="sosta2">2^ Sosta (Basilica S. Giovanni)</a></li>
+                    </ul>
+                </li>
+                <li><button type="button" class="sidebar-categoria cat-canti" data-page="canti"><span>Canti marcia</span></button>
+                    <ul class="sub-menu">
+                        <li><a href="#canti/canto-annunceremo" data-page="canti" data-anchor="canto-annunceremo">Annunceremo che Tu</a></li>
+                        <li><a href="#canti/canto-con-francesco" data-page="canti" data-anchor="canto-con-francesco">Con Francesco, profeti tra le genti</a></li>
+                        <li><a href="#canti/canto-e-se-non-fosse" data-page="canti" data-anchor="canto-e-se-non-fosse">E se non fosse un sogno</a></li>
+                        <li><a href="#canti/canto-emmanuel" data-page="canti" data-anchor="canto-emmanuel">Emmanuel</a></li>
+                        <li><a href="#canti/canto-francesco-vai" data-page="canti" data-anchor="canto-francesco-vai">Francesco vai</a></li>
+                        <li><a href="#canti/canto-luce" data-page="canti" data-anchor="canto-luce">Luce — Reale</a></li>
+                        <li><a href="#canti/canto-scatenate" data-page="canti" data-anchor="canto-scatenate">Scatenate la gioia</a></li>
+                        <li><a href="#canti/canto-sento-la-gioia" data-page="canti" data-anchor="canto-sento-la-gioia">Sento la gioia</a></li>
+                    </ul>
+                </li>
+                <li><button type="button" class="sidebar-categoria cat-ador" data-page="adorazione"><span>Adorazione</span></button>
+                    <ul class="sub-menu">
+                        <li><a href="#adorazione/ador-abbracciami" data-page="adorazione" data-anchor="ador-abbracciami">Abbracciami</a></li>
+                        <li><a href="#adorazione/ador-adoro-te" data-page="adorazione" data-anchor="ador-adoro-te">Adoro Te</a></li>
+                        <li><a href="#adorazione/ador-alto-e-glorioso" data-page="adorazione" data-anchor="ador-alto-e-glorioso">Alto e glorioso Dio</a></li>
+                        <li><a href="#adorazione/ador-cantico" data-page="adorazione" data-anchor="ador-cantico">Cantico delle creature</a></li>
+                        <li><a href="#adorazione/ador-come-prodigio" data-page="adorazione" data-anchor="ador-come-prodigio">Come un prodigio</a></li>
+                        <li><a href="#adorazione/ador-come-tu-mi-vuoi" data-page="adorazione" data-anchor="ador-come-tu-mi-vuoi">Come Tu mi vuoi</a></li>
+                        <li><a href="#adorazione/ador-invochiamo" data-page="adorazione" data-anchor="ador-invochiamo">Invochiamo la Tua presenza</a></li>
+                        <li><a href="#adorazione/ador-lodi-altissimo" data-page="adorazione" data-anchor="ador-lodi-altissimo">Lodi all'Altissimo</a></li>
+                        <li><a href="#adorazione/ador-lode-al-tuo-nome" data-page="adorazione" data-anchor="ador-lode-al-tuo-nome">Lode al Tuo nome</a></li>
+                        <li><a href="#adorazione/ador-pane-del-cielo" data-page="adorazione" data-anchor="ador-pane-del-cielo">Pane del Cielo</a></li>
+                        <li><a href="#adorazione/ador-piccoli-soli" data-page="adorazione" data-anchor="ador-piccoli-soli">Piccoli soli accanto al Sole</a></li>
+                        <li><a href="#adorazione/ador-re-dei-re" data-page="adorazione" data-anchor="ador-re-dei-re">Re dei Re</a></li>
+                        <li><a href="#adorazione/ador-re-di-gloria" data-page="adorazione" data-anchor="ador-re-di-gloria">Re di gloria</a></li>
+                        <li><a href="#adorazione/ador-resta-qui" data-page="adorazione" data-anchor="ador-resta-qui">Resta qui con noi</a></li>
+                        <li><a href="#adorazione/ador-san-damiano" data-page="adorazione" data-anchor="ador-san-damiano">San Damiano</a></li>
+                        <li><a href="#adorazione/ador-santo-santo" data-page="adorazione" data-anchor="ador-santo-santo">Santo, Santo – Tu sei la forza</a></li>
+                        <li><a href="#adorazione/ador-sono-qui" data-page="adorazione" data-anchor="ador-sono-qui">Sono qui a lodarti</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- CONTENUTO PRINCIPALE -->
+        <main class="content" id="contenuto" tabindex="-1">
+
+            <!-- PAGINA PRESENTAZIONE -->
+            <section id="pagina-presentazione" class="pagina active">
+                <h1 class="sezione-titolo" tabindex="-1">Presentazione</h1>
+
+                <div class="testo-unico">
+                    <div class="hero-banner">
+                        <div class="hero-titolo">PASSI DI SOLIDARIETÀ</div>
+                        <div class="hero-sottotitolo">Marcia Francescana 2026</div>
+                        <div class="hero-slogan">«Un piccolo gesto, una grande differenza»</div>
+                    </div>
+
+                    <h2 class="sotto-titolo">Perché questa Marcia?</h2>
+                    <p>
+                        La <strong>Marcia Francescana 2026</strong> nasce dal desiderio della <em>Gioventù Francescana (Gi.Fra.) di Vittoria</em> di percorrere insieme le vie della città per testimoniare la gioia del Vangelo e il valore dell'accoglienza fraterna.
+                    </p>
+                    <p>
+                        Ispirati dall'esempio di San Francesco d'Assisi, camminiamo per abbattere i muri dell'indifferenza e riscoprirci tutti fratelli. Ogni passo condiviso vuole essere un segno di speranza, un invito ad aprirsi al prossimo e un richiamo alla responsabilità verso i più deboli e verso il creato.
+                    </p>
+
+                    <hr>
+
+                    <!-- PERCORSO VERTICALE -->
+                    <div class="percorso-container">
+                        <div class="percorso-titolo">IL PERCORSO DELLA MARCIA</div>
+                        <div class="percorso-tappe-verticale">
+                            <div class="tappa-box tappa-1">PARTENZA<br><small style="font-weight: 500;">Piazza del Popolo</small></div>
+                            <span class="freccia-giu" aria-hidden="true">↓</span>
+                            <div class="tappa-box tappa-2">Via R. Cancelleri</div>
+                            <span class="freccia-giu" aria-hidden="true">↓</span>
+                            <div class="tappa-box tappa-3">Piazza Indipendenza</div>
+                            <span class="freccia-giu" aria-hidden="true">↓</span>
+                            <div class="tappa-box tappa-4">Via dei Mille</div>
+                            <span class="freccia-giu" aria-hidden="true">↓</span>
+                            <div class="tappa-box tappa-5">Via Cavour</div>
+                            <span class="freccia-giu" aria-hidden="true">↓</span>
+                            <div class="tappa-box tappa-6">ARRIVO<br><small style="font-weight: 500;">Chiesa S. Giovanni Battista</small></div>
+                        </div>
+                    </div>
+
+                    <!-- SEZIONE QR CODE -->
+                    <div class="qr-section">
+                        <h4>Condividi il Libretto Digitale</h4>
+                        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:8px;">
+                            Inquadra questo QR Code per aprire il libretto su qualsiasi smartphone.
+                        </p>
+                        <div class="qr-container">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://marcia-francescana-2026.github.io" alt="QR Code che apre il libretto digitale" width="160" height="160" loading="lazy">
+                        </div>
+                        <p style="font-size:0.9rem; margin-bottom:10px;">Oppure apri: <a href="https://marcia-francescana-2026.github.io">marcia-francescana-2026.github.io</a></p>
+                        <small style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600;">
+                            Gioventù Francescana - Vittoria
+                        </small>
+                    </div>
+
+                    <!-- NAVIGAZIONE PIÈ DI PAGINA -->
+                    <div class="page-nav-container">
+                        <div></div> <!-- Spaziatore vuoto a sinistra -->
+                        <a class="nav-card next" href="#letture" data-page="letture">
+                            <div class="nav-content">
+                                <span class="nav-label">Prossima pagina</span>
+                                <span class="nav-title">Letture marcia</span>
+                            </div>
+                            <div class="nav-arrow" aria-hidden="true">→</div>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PAGINA LETTURE MARCIA -->
+            <section id="pagina-letture" class="pagina">
+                <h1 class="sezione-titolo" tabindex="-1">Letture marcia</h1>
+
+                <div class="testo-unico">
+                    <p><strong>Gesto iniziale:</strong> Ad ogni partecipante verrà consegnata una striscia di iuta, che dovrà custodire durante tutta la marcia.</p>
+                    <p><strong>Inizio:</strong> il corteo si muoverà fino a Piazza Indipendenza in pieno stile francescano tra musica e canti per far gioire la città.</p>
+                    
+                    <span id="sosta1" class="ancora"></span>
+                    <div class="sosta-box">
+                        <strong>1^ SOSTA (P.zza Indipendenza):</strong><br>
+                        Presentazione del Coro "Noi Posso" ed esibizione<br>
+                        <strong>Tema: FARSI PROSSIMI</strong>
+                    </div>
+                    <p><strong>Guida:</strong> «Camminare significa mettere un piede davanti all'altro e accettare di uscire dalla propria zona di comfort. Nel suo cammino, Francesco incontra ciò che più temeva: il lebbroso. Il miracolo della solidarietà non avviene quando facciamo un calcolo conveniente, ma quando abbiamo il coraggio di toccare la ferita dell'altro, superando la tentazione del rifiuto e del giudizio.»</p>
+                    <p><strong>Lettore 1 (Dal Testamento di San Francesco - FF 110):</strong> «Il Signore diede a me, frate Francesco, di incominciare a fare penitenza così: quando ero nei peccati mi sembrava troppo amaro vedere i lebbrosi, e il Signore stesso mi condusse tra loro e usai con essi misericordia. E allontanandomi da essi, ciò che mi sembrava amaro mi fu cambiato in dolcezza di animo e di corpo. E dopo di ciò, stetti un poco e uscii dal secolo.»</p>
+                    <p><strong>Lettore 2 (Meditazione):</strong> «Oggi i "lebbrosi" hanno volti diversi: sono i poveri ai margini delle nostre strade, chi ha perso il lavoro, gli immigrati che cercano un futuro, chi si sente rifiutato dalla società per i propri sbagli. La solidarietà cristiana non è elemosina dall'alto verso il basso, ma è un incontro d'amore tra uguali. Francesco non si è limitato a dare una moneta: ha abbracciato il lebbroso. È nell'abbraccio con il soffrente che ciò che ci sembrava amaro e spaventoso si trasforma nella dolcezza più grande che l'anima possa sperimentare.»</p>
+                    <p><strong>Preghiera Comunitaria (tutti insieme):</strong> «Signore Gesù, che lungo le strade della Palestina ti sei fermato per toccare gli intoccabili e sanare i cuori spezzati, dona a tutti noi un pizzico del coraggio francescano. Liberaci dalla paura di chi è diverso da noi, dai pregiudizi che categorizzano gli uomini, dalla tentazione di voltarci dall'altra parte. Insegna alle nostre mani a farsi carezza e alla nostra presenza a farsi rifugio per chiunque si senta scartato dalla vita. Amen.»</p>
+                    
+                    <p><em>*la marcia proseguirà animando le vie della città fino ad arrivare a piazza San Giovanni*</em></p>
+                    
+                    <span id="sosta2" class="ancora"></span>
+                    <div class="sosta-box">
+                        <strong>2^ SOSTA (Basilica S. Giovanni Battista):</strong><br>
+                        <strong>Gesto:</strong> ogni partecipante dovrà annodare la sua striscia con quella del vicino creando, così, la rete della solidarietà<br>
+                        Esibizione del coro "Noi Posso" dentro la basilica<br>
+                        <strong>Tema: LA FRATELLANZA UNIVERSALE</strong>
+                    </div>
+                    <p><strong>Guida:</strong> «Siamo giunti a questa sosta dopo essere partiti dalla piazza del paese, luogo dell'evento solidale. La piazza è il simbolo del mondo, dell'incontro tra culture, storie e bisogni diversi. Nel magnifico contesto dell'Ottocentenario Francescano, ricordiamo che per Francesco non esistono estranei: ogni persona è "fratello" o "sorella", e persino il sole, la luna e la terra sono parte dell'unica grande famiglia di Dio.»</p>
+                    <p><strong>Lettore 1 (Dal Cantico delle Creature - FF 263):</strong> «Sia lodato, mio Signore, per quelli che perdonano per il Tuo amore e sopportano malattie e tribolazioni. Beati quelli che le sopporteranno in pace, perché da Te, o Altissimo, saranno incoronati. Sia lodato, mio Signore, per sorella nostra madre terra, la quale ci nutre e ci governa, e produce diversi frutti con fiori colorati ed erba.»</p>
+                    <p><strong>Lettore 2 (Meditazione):</strong> «Non c'è vera solidarietà verso gli uomini se non c'è anche la cura per la nostra casa comune. L'anno giubilare ci richiama alla giustizia sociale: al ridistribuire le risorse, al donare dignità a chi non ce l'ha, al prenderci cura delle future generazioni custodendo il creato. Essere una Chiesa Giubilare significa essere una luce accesa nel mondo, una comunità che non vive ripiegata su se stessa, ma che spalanca le braccia a tutte le sofferenze del pianeta: dalle guerre ai cambiamenti climatici, dalle ingiustizie sociali alle nuove povertà spirituali.»</p>
+                    <p><strong>Preghiera Comunitaria (tutti insieme):</strong> «Padre buono, Creatore dell'universo, facci sentire membra di un'unica famiglia humana. Rendi la nostra parrocchia un cantiere permanente di pace, un faro di giustizia e una sorgente di speranza. Fa' che l'esperienza di questa marcia non rimanga solo una parentesi, ma si trasformi in uno stile di vita quotidiano, operoso e fraterno, capace di custodire il creato e di servire l'uomo. Per Cristo nostro Signore. Amen.»</p>
+                    <p><strong>Testimonianza:</strong> presso la Basilica di San Giovanni Battista a cura del presidente regionale Gi.fra Matteo Leanza</p>
+
+                    <!-- NAVIGAZIONE PIÈ DI PAGINA -->
+                    <div class="page-nav-container">
+                        <a class="nav-card prev" href="#presentazione" data-page="presentazione">
+                            <div class="nav-arrow" aria-hidden="true">←</div>
+                            <div class="nav-content">
+                                <span class="nav-label">Pagina precedente</span>
+                                <span class="nav-title">Presentazione</span>
+                            </div>
+                        </a>
+                        <a class="nav-card next" href="#canti" data-page="canti">
+                            <div class="nav-content">
+                                <span class="nav-label">Prossima pagina</span>
+                                <span class="nav-title">Canti marcia</span>
+                            </div>
+                            <div class="nav-arrow" aria-hidden="true">→</div>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PAGINA CANTI MARCIA -->
+            <section id="pagina-canti" class="pagina canti-pagina">
+                <h1 class="sezione-titolo" tabindex="-1">Canti marcia</h1>
+
+                <div class="testo-unico">
+
+                    <!-- ANNUNCEREMO CHE TU -->
+                    <span id="canto-annunceremo" class="ancora"></span>
+                    <h2 class="titolo-canto">Annunceremo che Tu </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span><br>
+                        Annunceremo che Tu sei verità<br>
+                        lo grideremo dai tetti delle nostre città,<br>
+                        senza paura anche tu<br>
+                        lo puoi cantare.
+                    </div>
+                    <p>E non temere dai<br>
+                    che non ci vuole poi tanto<br>
+                    quello che non si sa<br>
+                    non resterà nascosto.<br>
+                    Se ti parlo nel buio<br>
+                    lo dirai alla luce<br>
+                    ogni giorno è il momento di credere in Te.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+                    <p>Con il coraggio tu,<br>
+                    porterai la Parola che salva<br>
+                    anche se ci sarà chi non vuole accogliere il dono.<br>
+                    Tu non devi fermarti ma continua a lottare<br>
+                    il mio Spirito sempre ti accompagnerà.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+                    <p>Non ti abbandono mai<br>
+                    Io sono il Dio fedele,<br>
+                    conosco il cuore tuo<br>
+                    ogni tuo pensiero mi è noto.<br>
+                    La tua vita è preziosa<br>
+                    Vale più di ogni cosa,<br>
+                    è il segno più grande del mio Amore per te.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+
+                    <!-- CON FRANCESCO, PROFETI TRA LE GENTI -->
+                    <span id="canto-con-francesco" class="ancora"></span>
+                    <h2 class="titolo-canto">Con Francesco, profeti tra le genti </h2>
+                    <p>Quando andate per le strade<br>
+                    del mondo, lodatelo!<br>
+                    Quando siete ancora<br>
+                    lungo la via, amatelo!<br>
+                    Quando stanchi vi buttate<br>
+                    per terra, pregatelo!<br>
+                    Quando ancora tu sei<br>
+                    pieno di forces, ringrazialo!<br>
+                    Quando il cuore dice<br>
+                    non ce la fai, invocalo!<br>
+                    Quando arrivi e ti senti<br>
+                    felice, adoralo!</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Il Signore Dio (Loda loda lodatelo)<br>
+                        onnipotente (Loda loda lodatelo)<br>
+                        noi vi annunciamo (Alleluia, alleluia)<br>
+                        con semplicità (Loda loda lodatelo)<br>
+                        e fedeltà: (Loda loda lodatelo)<br>
+                        lodate il Signor! (Alleluia, alleluia)
+                    </div>
+                    <p>Quando vedi un fratello<br>
+                    un po’ triste, sorridigli!<br>
+                    Se ti accorgi che è rimasto<br>
+                    un po’ indietro, aspettalo!<br>
+                    Se il suo zaino è<br>
+                    troppo pesante, aiutalo!<br>
+                    Alla gente che per strada<br>
+                    incontri, annuncialo!<br>
+                    Solo Lui è la gioia<br>
+                    e l’amore, proclamalo!<br>
+                    Con il canto e la pace<br>
+                    nel cuore, dimostralo!</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Alleluia, alleluia, alleluia, alleluia</p>
+
+                    <!-- E SE NON FOSSE UN SOGNO -->
+                    <span id="canto-e-se-non-fosse" class="ancora"></span>
+                    <h2 class="titolo-canto">E se non fosse un sogno </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        E se non fosse un sogno<br>
+                        se tutto fosse vero?<br>
+                        Se fosse vero Amore<br>
+                        che il mondo fa girar?<br>
+                        E se non fosse un sogno<br>
+                        se tutto fosse vero?<br>
+                        Potresti far qualcosa<br>
+                        per rinnovar con noi<br>
+                        l’intera umanità.
+                    </div>
+                    <p>Se coraggio avrai, alto volerai<br>
+                    verso un orizzonte che non è più utopia<br>
+                    e quel mondo in cui non speravi più<br>
+                    lo vedremo insieme io e te.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Se coraggio avrai, seme ti farai<br>
+                    che caduto in terra vi marcisce in umiltà.<br>
+                    Piccolo così sembra nulla, ma<br>
+                    un grandioso albero sarà.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Se coraggio avrai, certo crederai<br>
+                    che la vera vita dalla morte nascerà.<br>
+                    La fragilità forza diverrà<br>
+                    quando le sue orme seguirai.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- EMMANUEL -->
+                    <span id="canto-emmanuel" class="ancora"></span>
+                    <h2 class="titolo-canto">Emmanuel </h2>
+                    <p>Dall'orizzonte una grande luce viaggia nella storia<br>
+                    E lungo gli anni ha vinto il buio facendosi memoria<br>
+                    E illuminando la nostra vita, chiaro ci rivela<br>
+                    Che non si vive se non si cerca la verità<br>
+                    Un grande dono che Dio ci ha fatto è Cristo, il suo figlio<br>
+                    L'umanità è rinnovata, è in lui salvata<br>
+                    È vero uomo, è vero Dio, è il pane della vita<br>
+                    Che ad ogni uomo, ai suoi fratelli ridonerà</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Siamo qui<br>
+                        Sotto la stessa luce<br>
+                        Sotto la sua croce<br>
+                        Cantando ad una voce<br>
+                        È l'Emmanuel<br>
+                        Emmanuel, Emmanuel<br>
+                        È l'Emmanuel, l'Emmanuel
+                    </div>
+                    <p>La morte è uccisa, la vita ha vinto, è Pasqua in tutto il mondo<br>
+                    Un vento soffia in ogni uomo lo Spirito fecondo<br>
+                    Che porta avanti nella storia la Chiesa, sua sposa<br>
+                    Sotto lo sguardo di Maria, comunità<br>
+                    Noi debitori del passato, di secoli di storia<br>
+                    Di vite date per amore, di santi che han creduto<br>
+                    Di uomini che ad alta quota insegnano a volare<br>
+                    Di chi la storia sa cambiare, come Gesù</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- FRANCESCO VAI -->
+                    <span id="canto-francesco-vai" class="ancora"></span>
+                    <h2 class="titolo-canto">Francesco vai 𝜏</h2>
+                    <p>Quello che io vivo non mi basta più,<br>
+                    tutto quel che avevo non mi serve più:<br>
+                    io cercherò, quello che davvero vale,<br>
+                    e non più il servo ma il padrone seguirò!</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Francesco, vai, ripara la mia casa!<br>
+                        Francesco, vai, non vedi che è in rovina?<br>
+                        E non temere io sarò con te dovunque andrai.<br>
+                        Francesco, vai!
+                    </div>
+                    <p>Nel buio e nel silenzio ti ho cercato, Dio;<br>
+                    dal fondo della notte ho alzato il grido mio<br>
+                    e griderò finché non avrò risposta<br>
+                    per conoscere la tua volontà.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Altissimo Signore, cosa vuoi da me?<br>
+                    Tutto quel che avevo l'ho donato a Te.<br>
+                    Ti seguirò nella gioia e nel dolore<br>
+                    e della vita mia una lode a Te farò.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- LUCE — REALE -->
+                    <span id="canto-luce" class="ancora"></span>
+                    <h2 class="titolo-canto">Luce — Reale </h2>
+                    <p>Il segreto della libertà<br>
+                    Quella vera<br>
+                    Batte dentro di te<br>
+                    È come risvegliarsi un mattino<br>
+                    Col sole<br>
+                    Dopo un lungo inverno<br>
+                    Nel soffrire<br>
+                    Mio Signore<br>
+                    Ho incontrato Te<br>
+                    Dio amore<br>
+                    Nel perdono<br>
+                    Nel gioire<br>
+                    Ho capito che sei luce per me</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Signore sono qui<br>
+                        Per dirti ancora sì<br>
+                        Luce<br>
+                        Fammi scoppiare di<br>
+                        Gioia di vivere<br>
+                        Luce<br>
+                        Fammi strumento per<br>
+                        Portare attorno a me<br>
+                        Luce<br>
+                        E chi è vicino a me<br>
+                        Sappia che tutto in Te<br>
+                        È Luce
+                    </div>
+                    <p>Voglio ringraziarti Signore<br>
+                    Per la vita<br>
+                    Che mi hai ridonato<br>
+                    So che sei nell'amore<br>
+                    Degli amici<br>
+                    Che ora ho incontrato<br>
+                    Nel soffrire<br>
+                    Mio Signore<br>
+                    Ho incontrato Te<br>
+                    Dio amore<br>
+                    Nel perdono<br>
+                    Nel gioire<br>
+                    Ho capito che<br>
+                    Sei luce per me</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>E con le lacrime agli occhi<br>
+                    E le mie mani alzate verso Te Gesù<br>
+                    Con la speranza nel cuore<br>
+                    E la tua luce in me paura non ho più</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- SCATENATE LA GIOIA -->
+                    <span id="canto-scatenate" class="ancora"></span>
+                    <h2 class="titolo-canto">Scatenate la gioia </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Scatenate la gioia, cantate al Signor!<br>
+                        Egli fa cose grandi, grande è il suo amor!<br>
+                        Ci ha donato la vita, la felicità,<br>
+                        scatenate la gioia, cantate con noi!
+                    </div>
+
+                    <!-- SENTO LA GIOIA -->
+                    <span id="canto-sento-la-gioia" class="ancora"></span>
+                    <h2 class="titolo-canto">Sento la gioia </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Sento la gioia, gioia, gioia<br>
+                        sento la gioia, gioia, gioia dentro il mio cuore,<br>
+                        sento la gioia.
+                    </div>
+                    <p>Perché credo nella vita,<br>
+                    perché spero ogni mattina,<br>
+                    di iniziare il giorno con amore.<br>
+                    Perché vivo nel presente,<br>
+                    condivido con la gente,<br>
+                    il mio canto, i sogni e la speranza.<br>
+                    Perché credo sempre in Dio,<br>
+                    Lui mi guida ed è mio amico,<br>
+                    Lui è veramente qui vicino.<br>
+                    Perché so che nel mio cuore<br>
+                    non esiste il rancore,<br>
+                    prego per la pace e per l'amore</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Sento la gioia, gioia, gioia<br>
+                        sento la gioia, gioia, gioia dentro il mio cuore,<br>
+                        sento la gioia.
+                    </div>
+                    <p>Perché credo nella vita,<br>
+                    perché spero ogni mattina,<br>
+                    di iniziare il giorno con amore.<br>
+                    Perché vivo nel presente,<br>
+                    condivido con la gente,<br>
+                    il mio canto, i sogni e la speranza.<br>
+                    Perché credo sempre in Dio,<br>
+                    Lui mi guida ed è mio amico,<br>
+                    Lui è veramente qui vicino.<br>
+                    Perché so che nel mio cuore<br>
+                    non existe il rancore,<br>
+                    prego per la pace e per l'amore</p>
+
+                    <!-- NAVIGAZIONE PIÈ DI PAGINA -->
+                    <div class="page-nav-container">
+                        <a class="nav-card prev" href="#letture" data-page="letture">
+                            <div class="nav-arrow" aria-hidden="true">←</div>
+                            <div class="nav-content">
+                                <span class="nav-label">Pagina precedente</span>
+                                <span class="nav-title">Letture marcia</span>
+                            </div>
+                        </a>
+                        <a class="nav-card next" href="#adorazione" data-page="adorazione">
+                            <div class="nav-content">
+                                <span class="nav-label">Prossima pagina</span>
+                                <span class="nav-title">Adorazione</span>
+                            </div>
+                            <div class="nav-arrow" aria-hidden="true">→</div>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PAGINA ADORAZIONE -->
+            <section id="pagina-adorazione" class="pagina">
+                <h1 class="sezione-titolo" tabindex="-1">Adorazione</h1>
+
+                <div class="testo-unico">
+
+                    <!-- ABBRACCIAMI -->
+                    <span id="ador-abbracciami" class="ancora"></span>
+                    <h2 class="titolo-canto">Abbracciami </h2>
+                    <p>Gesù, Parola viva e vera<br>
+                    Sorgente che disseta e cura ogni ferita<br>
+                    Ferma su di me i tuoi occhi<br>
+                    La tua mano stendi e donami la vita</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Abbracciami Dio dell'eternità<br>
+                        Rifugio dell'anima, grazia che opera<br>
+                        Riscaldami fuoco che libera<br>
+                        Manda il tuo Spirito, Maranathà Gesù
+                    </div>
+                    <p>Gesù asciuga il nostro pianto<br>
+                    Leone vincitore della tribù di Giuda<br>
+                    Vedi nella tua potenza<br>
+                    Questo cuore sciogli con ogni sua paura</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Per sempre io canterò la tua immensa fedeltà<br>
+                    Il tuo spirito in me in eterno ti loderà<br>
+                    Per sempre io canterò la tua immensa fedeltà<br>
+                    Il tuo spirito in me in eterno ti loderà</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Riscaldami fuoco che libera<br>
+                        Manda il tuo Spirito, Maranathà Gesù (Maranathà Gesù)<br>
+                        Riscaldami fuoco che libera<br>
+                        Manda il tuo Spirito, Maranathà Gesù
+                    </div>
+
+                    <!-- ADORO TE -->
+                    <span id="ador-adoro-te" class="ancora"></span>
+                    <h2 class="titolo-canto">Adoro Te </h2>
+                    <p>Sei qui davanti a me, o mio Signore,<br>
+                    sei in questa brezza che ristora il cuore,<br>
+                    roveto che mai si consumerà,<br>
+                    presenza che riempie l'anima.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Adoro Te, fonte della Vita,<br>
+                        adoro Te, Trinità infinita.<br>
+                        I miei calzari leverò su questo santo suolo,<br>
+                        alla presenza Tua mi prostrerò.
+                    </div>
+                    <p>Sei qui davanti a me, o mio Signore,<br>
+                    nella Tua grazia trovo la mia gioia.<br>
+                    Io lodo, ringrazio e prego<br>
+                    perché il mondo ritorni a vivere in Te.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+
+                    <!-- ALTO E GLORIOSO DIO -->
+                    <span id="ador-alto-e-glorioso" class="ancora"></span>
+                    <h2 class="titolo-canto">Alto e glorioso Dio </h2>
+                    <p>Alto e glorioso Dio<br>
+                    illumina il cuore mio,<br>
+                    dammi fede retta, speranza certa,<br>
+                    carità perfetta.<br>
+                    Dammi umiltà profonda,<br>
+                    dammi senno e cognoscimento,<br>
+                    che io possa sempre servire<br>
+                    con gioia i tuoi comandamenti.</p>
+                    <p>Rapisca ti prego Signore,<br>
+                    l'ardente e dolce forza del tuo amore<br>
+                    la mente mia da tutte le cose,<br>
+                    perchè io muoia per amor tuo,<br>
+                    come tu moristi per amor dell'amor mio.</p>
+                    <p>Alto e glorioso Dio<br>
+                    illumina il cuore mio,<br>
+                    dammi fede retta, speranza certa,<br>
+                    carità perfetta.<br>
+                    Dammi umiltà profonda,<br>
+                    dammi senno e cognoscimento,<br>
+                    che io possa sempre servire<br>
+                    con gioia i tuoi comandamenti.</p>
+
+                    <!-- CANTICO DELLE CREATURE -->
+                    <span id="ador-cantico" class="ancora"></span>
+                    <h2 class="titolo-canto">Cantico delle creature </h2>
+                    <p>Altissimo, onnipotente, buon Signore<br>
+                    tue sono le lodi, la gloria e l'onore<br>
+                    ed ogni benedizione.<br>
+                    A te solo, Altissimo, si confanno,<br>
+                    e nessun uomo è degno di te.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per tutte le creature,<br>
+                    specialmente per messer Frate Sole,<br>
+                    il quale porta il giorno che ci illumina<br>
+                    ed esso è bello e raggiante con grande splendore:<br>
+                    di te, Altissimo, porta significazione.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per sora Luna e le Stelle:<br>
+                    in cielo le hai formate limpide,<br>
+                    belle e preziose.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per frate Vento e per l'Aria,<br>
+                    le Nuvole, il Cielo sereno<br>
+                    ed ogni tempo per il quale<br>
+                    alle tue creature dai sostentamento.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per sora Acqua,<br>
+                    la quale è molto utile,<br>
+                    umile, preziosa e casta.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per frate Fuoco,<br>
+                    con il quale ci illumini la notte:<br>
+                    ed esso è robusto, bello, forte e giocondo.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per nostra Madre Terra,<br>
+                    la quale ci sostenta e governa<br>
+                    e produce diversi frutti<br>
+                    con coloriti fiori ed erba.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per quelli che perdonano per amor tuo<br>
+                    e sopportano malattia e sofferenza.<br>
+                    Beati quelli che le sopporteranno in pace<br>
+                    perchè da te saranno incoronati.</p>
+                    <p>Laudato sii, o mio Signore,<br>
+                    per nostra sora Morte corporale,<br>
+                    dalla quale nessun uomo vivente può scampare.<br>
+                    Guai a quelli che morranno nel peccato mortale.<br>
+                    Beati quelli che si troveranno nella tua volontà<br>
+                    poichè loro la morte non farà alcun male.</p>
+                    <p>Laudate e benedite il Signore<br>
+                    e ringraziatelo<br>
+                    e servitelo con grande umiltate.</p>
+
+                    <!-- COME UN PRODIGIO -->
+                    <span id="ador-come-prodigio" class="ancora"></span>
+                    <h2 class="titolo-canto">Come un prodigio </h2>
+                    <p>Signore Tu mi scruti e conosci<br>
+                    Sai quando seggo e quando mi alzo<br>
+                    Riesci a vedere i miei pensieri<br>
+                    Sai quando io cammino e quando riposo<br>
+                    Ti sono note tutte le mie vie<br>
+                    La mia parola non è ancora sulla lingua<br>
+                    E Tu, Signore, già la conosci tutta</p>
+                    <p>Sei Tu che mi hai creato<br>
+                    E mi hai tessuto nel seno di mia madre</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Tu mi hai fatto come un Prodigio<br>
+                        Le tue opere sono stupende<br>
+                        E per questo ti lodo
+                    </div>
+                    <p>Di fronte e alle spalle Tu mi circondi<br>
+                    Poni su me la tua mano<br>
+                    La tua saggezza, stupenda per me<br>
+                    È troppo alta e io non la comprendo<br>
+                    Che sia in cielo o agli inferi ci sei<br>
+                    Non si può mai fuggire dalla tua presenza<br>
+                    Ovunque la tua mano guiderà la mia</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>E nel segreto Tu mi hai formato<br>
+                    Mi hai intessuto dalla terra<br>
+                    Neanche le ossa ti eran nascoste<br>
+                    Ancora informe mi hanno visto i tuoi occhi<br>
+                    I miei giorni erano fissati<br>
+                    Quando ancora non ne esisteva uno<br>
+                    E tutto quanto era scritto nel tuo libro</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+
+                    <!-- COME TU MI VUOI -->
+                    <span id="ador-come-tu-mi-vuoi" class="ancora"></span>
+                    <h2 class="titolo-canto">Come Tu mi vuoi </h2>
+                    <p>Eccomi, Signor, vengo a Te, mio Re;<br>
+                    che si compia in me la Tua volontà.<br>
+                    Eccomi, Signor, vengo a Te, mio Dio;<br>
+                    plasma il cuore mio e di Te vivrò.<br>
+                    Se Tu lo vuoi, Signore, manda me<br>
+                    e il Tuo nome annuncerò.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Come Tu mi vuoi io sarò,<br>
+                        dove Tu mi vuoi io andrò.<br>
+                        Questa vita io voglio donarla a Te<br>
+                        per dar gloria al Tuo nome, mio Re.<br>
+                        Come Tu mi vuoi io sarò,<br>
+                        dove Tu mi vuoi io andrò.<br>
+                        Se mi guida il Tuo amore paura non ho,<br>
+                        per sempre io sarò come Tu mi vuoi.
+                    </div>
+                    <p>Eccomi, Signor, vengo a Te, mio Re:<br>
+                    che si compia in me la Tua volontà.<br>
+                    Eccomi, Signor, vengo a Te, mio Dio;<br>
+                    plasma il cuore mio e di Te vivrò.<br>
+                    Tra le Tue mani mai più vacillerò<br>
+                    e strumento Tuo sarò.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- INVOCHIAMO LA TUA PRESENZA -->
+                    <span id="ador-invochiamo" class="ancora"></span>
+                    <h2 class="titolo-canto">Invochiamo la Tua presenza </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Invochiamo la tua presenza, vieni Signor<br>
+                        Invochiamo la tua presenza, scendi su di noi
+                    </div>
+                    <p>Vieni consolatore, dona pace ed umiltà<br>
+                    Acqua viva d'amore, questo cuore apriamo a te<br>
+                    Vieni spirito, vieni spirito, scendi su di noi<br>
+                    Vieni spirito, vieni spirito, scendi su di noi<br>
+                    Vieni su noi, Maranathà<br>
+                    Vieni su noi spirito</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Scendi su di noi<br>
+                        Invochiamo la tua presenza, vieni Signor<br>
+                        Invochiamo la tua presenza, scendi su di noi
+                    </div>
+                    <p>Vieni luce dei cuori, dona forza e fedeltà<br>
+                    Fuoco eterno d'amore, questa vita offriamo a te</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x3)</span>
+                    </div>
+
+                    <!-- LODI ALL'ALTISSIMO -->
+                    <span id="ador-lodi-altissimo" class="ancora"></span>
+                    <h2 class="titolo-canto">Lodi all'Altissimo </h2>
+                    <p>Tu sei Santo, Signore Dio<br>
+                    Tu sei forte, Tu sei grande<br>
+                    Tu sei l'Altissimo, l'Onnipotente<br>
+                    Tu Padre Santo, Re del cielo<br>
+                    Tu sei trino, uno Signore<br>
+                    Tu sei il bene, tutto il bene<br>
+                    Tu sei l'amore, Tu sei il vero<br>
+                    Tu sei umiltà, Tu sei sapienza<br>
+                    Tu sei bellezza, Tu sei la pace<br>
+                    La sicurezza, il gaudio, la letizia<br>
+                    Tu sei speranza, Tu sei giustizia<br>
+                    Tu temperanza e ogni ricchezza<br>
+                    Tu sei il Custode, Tu sei mitezza<br>
+                    Tu sei rifugio, Tu sei fortezza<br>
+                    Tu carità, fede e speranza<br>
+                    Tu sei tutta la nostra dolcezza<br>
+                    Tu sei la vita, eterno gaudio</p>
+
+                    <!-- LODE AL TUO NOME -->
+                    <span id="ador-lode-al-tuo-nome" class="ancora"></span>
+                    <h2 class="titolo-canto">Lode al Tuo nome </h2>
+                    <p>Lode al nome tuo dalle terre più floride<br>
+                    Dove tutto sembra vivere, lode al nome tuo<br>
+                    Lode al nome tuo dalle terre più aride<br>
+                    Dove tutto sembra sterile, lode al nome tuo</p>
+                    <p>Tornerò a lodarti sempre per ogni dono tuo<br>
+                    E quando scenderà la notte, sempre io dirò</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Benedetto il nome del Signor, lode al nome tuo<br>
+                        Benedetto il nome del Signor, il glorioso nome di Gesù
+                    </div>
+                    <p>Lode al nome tuo quando il sole splende su di me<br>
+                    Quando tutto è incantevole, lode al nome tuo<br>
+                    Lode al nome tuo quando io sto davanti a te<br>
+                    Con il cuore triste e fragile, lode al nome tuo</p>
+                    <p>Tornerò a lodarti sempre per ogni dono tuo<br>
+                    E quando scenderà la notte, sempre io dirò</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Tu doni e porti via, Tu doni e porti via<br>
+                    Ma sempre sceglierò di benedire te<br>
+                    Tornerò a lodarti sempre per ogni dono tuo<br>
+                    E quando scenderà la notte sempre io dirò</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Benedetto il nome del Signor, lode al nome tuo<br>
+                        Benedetto il nome del Signor, lode al nome tuo<br>
+                        Benedetto il nome del Signor, lode al nome tuo<br>
+                        Benedetto il nome del Signor, il glorioso nome di Gesù
+                    </div>
+                    <p>Tu doni e porti via, Tu doni e porti via<br>
+                    Ma sempre sceglierò di benedire te<br>
+                    Tu doni e porti via, Tu doni e porti via<br>
+                    Ma sempre sceglierò di benedire te</p>
+
+                    <!-- PANE DEL CIELO -->
+                    <span id="ador-pane-del-cielo" class="ancora"></span>
+                    <h2 class="titolo-canto">Pane del Cielo </h2>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Pane del Cielo sei Tu, Gesù,<br>
+                        via d'amore: Tu ci fai come Te.
+                    </div>
+                    <p>No, non è rimasta fredda la terra:<br>
+                    Tu sei rimasto con noi<br>
+                    per nutrirci di Te, Pane di Vita;<br>
+                    ed infiammare col tuo amore<br>
+                    tutta l'umanità.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Sì, il Cielo è qui su questa terra:<br>
+                    Tu sei rimasto con noi<br>
+                    ma ci porti con Te nella tua casa<br>
+                    dove vivremo insieme a Te<br>
+                    tutta l'eternità.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>No, la morte non può farci paura:<br>
+                    Tu sei rimasto con noi.<br>
+                    E chi vive in Te vive per sempre.<br>
+                    Sei Dio con noi, sei Dio per noi,<br>
+                    Dio in mezzo a noi.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- PICCOLI SOLI ACCANTO AL SOLE -->
+                    <span id="ador-piccoli-soli" class="ancora"></span>
+                    <h2 class="titolo-canto">Piccoli soli accanto al Sole </h2>
+                    <p>Ed entri Tu nella vita,<br>
+                    illuminando gli attimi di eternità…<br>
+                    Ed entri Tu, come un vento<br>
+                    che, fra le braci spente,<br>
+                    sveglia ancora in noi la fiamma<br>
+                    che ci fa</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Come Te, piccoli soli accanto al Sole,<br>
+                        fiamme accese in terra dal Tuo amore<br>
+                        perché la terra splenda come il Cielo.
+                    </div>
+                    <p>E riempi Tu questa vita<br>
+                    e dentro noi un cuore nuovo batte già,<br>
+                    un cuore che abbraccia il mondo<br>
+                    ma vive nel Tuo Cielo,<br>
+                    un cuore nato dall’amore<br>
+                    che ci fa</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+
+                    <!-- RE DEI RE -->
+                    <span id="ador-re-dei-re" class="ancora"></span>
+                    <h2 class="titolo-canto">Re dei Re </h2>
+                    <p>Signore grande, Dio ammirabile<br>
+                    Onnipotente, o Creatore<br>
+                    O Salvatore di misericordia, Re dei re<br>
+                    Hai sollevato i nostri volti dalla polvere<br>
+                    Le nostre colpe hai portato su di Te<br>
+                    Signore, Ti sei fatto uomo in tutto come noi per amore</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Figlio dell'Altissimo, povero tra i poveri<br>
+                        Vieni a dimorare tra noi<br>
+                        Dio dell'impossibile, re di tutti i secoli<br>
+                        Vieni nella Tua maestà<br>
+                        Re dei re, i popoli Ti acclamano<br>
+                        I cieli Ti proclamano re dei re<br>
+                        Luce degli uomini, regna col Tuo amore tra noi
+                    </div>
+                    <p>Ci hai riscattati dalla stretta delle tenebre<br>
+                    Perché potessimo glorificare Te<br>
+                    Hai riversato in noi la vita del Tuo Spirito per amore</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Tua è la gloria per sempre<br>
+                    Tua è la gloria per sempre<br>
+                    Gloria, gloria<br>
+                    Gloria, gloria</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- RE DI GLORIA -->
+                    <span id="ador-re-di-gloria" class="ancora"></span>
+                    <h2 class="titolo-canto">Re di gloria </h2>
+                    <p>Ho incontrato te, Gesù,<br>
+                    e ogni cosa in me è cambiata,<br>
+                    tutta la mia vita ora ti appartiene<br>
+                    tutto il mio passato io lo affido a te,<br>
+                    Gesù, Re di gloria, mio Signor.</p>
+                    <p>Tutto in te riposa,<br>
+                    la mia mente, il mio cuore,<br>
+                    trovo pace in te Signor<br>
+                    tu mi dai la gioia.<br>
+                    Voglio stare insieme a te,<br>
+                    non lasciarti mai,<br>
+                    Gesù, Re di gloria, mio Signor.</p>
+                    <p>Dal tuo amore chi mi separerà,<br>
+                    sulla croce hai dato la vita per me.<br>
+                    Una corona di gloria mi darai<br>
+                    quando un giorno ti vedrò.</p>
+                    <p>Tutto in te riposa,<br>
+                    la mia mente, il mio cuore,<br>
+                    trovo pace in te, Signor,<br>
+                    tu mi dai la gioia vera.<br>
+                    Voglio stare insieme a te,<br>
+                    non lasciarti mai Gesù,<br>
+                    Re di gloria, mio Signor.</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Io ti aspetto, mio Signor,<br>
+                        Io ti aspetto, mio Signor,<br>
+                        io ti aspetto, mio Re!
+                    </div>
+
+                    <!-- RESTA QUI CON NOI -->
+                    <span id="ador-resta-qui" class="ancora"></span>
+                    <h2 class="titolo-canto">Resta qui con noi </h2>
+                    <p>Le ombre si distendono e scende ormai la sera<br>
+                    E s'allontanano dietro ai monti i riflessi<br>
+                    Di un giorno che non finirà<br>
+                    Di un giorno che ora correrà sempre<br>
+                    Perché sappiamo che una nuova vita<br>
+                    Da Te è partita e mai più si fermerà</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Resta qui con noi, il sole scende già<br>
+                        Resta qui con noi, Signore è sera ormai<br>
+                        Resta qui con noi, il sole scende già<br>
+                        Se Tu sei fra noi, la notte non verrà
+                    </div>
+                    <p>S'allarga verso il mare il Tuo cerchio d'onda<br>
+                    Che il vento spingerà fino a quando giungerà<br>
+                    Ai confini di ogni cuore, alle porte dell'amore vero<br>
+                    Come una fiamma che dove passa brucia<br>
+                    Così il Tuo amore tutto il mondo invaderà</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Davanti a noi l'umanità lotta, soffre, spera<br>
+                    Come una terra che nell'arsura chiede l'acqua<br>
+                    Da un cielo senza nuvole ma che sempre le può dare vita<br>
+                    Con Te saremo sorgente d'acqua pura<br>
+                    Con Te fra noi il deserto fiorirà</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x2)</span>
+                    </div>
+
+                    <!-- SAN DAMIANO -->
+                    <span id="ador-san-damiano" class="ancora"></span>
+                    <h2 class="titolo-canto">San Damiano </h2>
+                    <p>Ogni uomo semplice,<br>
+                    porta in cuore un sogno,<br>
+                    con amore ed umiltà<br>
+                    potrà costruirlo.<br>
+                    Se davvero tu saprai<br>
+                    vivere umilmente,<br>
+                    più felice tu sarai<br>
+                    anche senza niente.<br>
+                    Se vorrai ogni giorno<br>
+                    con il tuo sudore,<br>
+                    una pietra dopo l'altra<br>
+                    in alto arriverai.</p>
+                    <p>Nella vita semplice<br>
+                    troverai la strada,<br>
+                    che la calma donerà<br>
+                    al tuo cuore puro.<br>
+                    E le gioie semplici<br>
+                    sono le più belle,<br>
+                    sono quelle che alla fine<br>
+                    sono le più grandi.<br>
+                    Dai e dai ogni giorno<br>
+                    con il tuo sudore,<br>
+                    una pietra dopo l'altra<br>
+                    in alto arriverai.</p>
+                    <p>Vivi puro e libero,<br>
+                    non avere fretta.</p>
+
+                    <!-- SANTO, SANTO – TU SEI LA FORZA -->
+                    <span id="ador-santo-santo" class="ancora"></span>
+                    <h2 class="titolo-canto">Santo, Santo – Tu sei la forza </h2>
+                    <p>Proprio quando sono qui con Te<br>
+                    Tu vinci per me le mie battaglie<br>
+                    Proprio quando sono qui con Te<br>
+                    Tu vinci per me le mie infermità</p>
+                    <p>In Te Dio io trovo la forza<br>
+                    Per non gettare la spugna<br>
+                    Perché Cristo ha donato il Suo sangue<br>
+                    In Te Dio io trovo la forza<br>
+                    Per non gettare la spugna<br>
+                    Perché Cristo è in me</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Tu sei la forza nella debolezza<br>
+                        Sei la speranza del cuore mio<br>
+                        Tu sei la certezza in un mondo che è senza<br>
+                        Tu sei il mio Dio, non dubito!
+                    </div>
+                    <p>E se Gesù Tu sei con me, chi sarà contro di me?<br>
+                    Se Tu Gesù sarai con me, io vincerò comunque!<br>
+                    E se Gesù Tu sei con me, chi sarà contro di me?<br>
+                    Se Tu Gesù sarai con me, io vincerò comunque!<br>
+                    E se Gesù Tu sei con me, chi sarà contro di me?<br>
+                    Se Tu Gesù sarai con me, io vincerò comunque!<br>
+                    E se Gesù Tu sei con me, chi sarà contro di me?<br>
+                    Se Tu Gesù sarai con me, io vincerò comunque!</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+
+                    <!-- SONO QUI A LODARTI -->
+                    <span id="ador-sono-qui" class="ancora"></span>
+                    <h2 class="titolo-canto">Sono qui a lodarti </h2>
+                    <p>Luce del mondo nel buio del cuore<br>
+                    Vieni ed illuminami<br>
+                    Tu mia sola speranza di vita<br>
+                    Resta per sempre con me</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span><br>
+                        Sono qui a lodarti, qui per adorarti<br>
+                        Qui per dirti che tu sei il mio Dio<br>
+                        E solo tu sei Santo, sei meraviglioso<br>
+                        Degno e glorioso sei per me
+                    </div>
+                    <p>Re della storia e Re della gloria<br>
+                    Sei sceso in terra fra noi<br>
+                    Con umiltà il tuo trono hai lasciato<br>
+                    Per dimostrarci il tuo amor</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Io mai saprò quanto ti costò<br>
+                    Lì sulla croce morir per me<br>
+                    Io mai saprò quanto ti costò<br>
+                    Lì sulla croce morir per me<br>
+                    Io mai saprò quanto ti costò<br>
+                    Lì sulla croce morir per me<br>
+                    Io mai saprò quanto ti costò<br>
+                    Lì sulla croce morir per me</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT. (x3)</span>
+                    </div>
+
+                    <!-- NAVIGAZIONE PIÈ DI PAGINA -->
+                    <div class="page-nav-container">
+                        <a class="nav-card prev" href="#canti" data-page="canti">
+                            <div class="nav-arrow" aria-hidden="true">←</div>
+                            <div class="nav-content">
+                                <span class="nav-label">Pagina precedente</span>
+                                <span class="nav-title">Canti marcia</span>
+                            </div>
+                        </a>
+                        <div></div> <!-- Spaziatore vuoto a destra -->
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT: menu, navigazione con URL condivisibili (#pagina/canto), dimensione testo -->
+    <script>
+    (function () {
+        var PAGES = ['presentazione', 'letture', 'canti', 'adorazione'];
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        var toggleBtn = document.getElementById('toggleBtn');
+        var desktop = window.matchMedia('(min-width: 992px)');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        function setMenu(open) {
+            sidebar.classList.toggle('active', open);
+            overlay.classList.toggle('active', open);
+            document.body.classList.toggle('menu-open', open);
+            toggleBtn.setAttribute('aria-expanded', String(open));
+            toggleBtn.setAttribute('aria-label', open ? 'Chiudi indice' : 'Apri indice');
+            if (open) { var f = sidebar.querySelector('button, a'); if (f) f.focus(); }
+        }
+        toggleBtn.addEventListener('click', function () { setMenu(!sidebar.classList.contains('active')); });
+        overlay.addEventListener('click', function () { setMenu(false); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) { setMenu(false); toggleBtn.focus(); }
+        });
+        desktop.addEventListener('change', function () { setMenu(false); });
+
+        function route(initial) {
+            var parts = decodeURIComponent(location.hash.slice(1)).split('/');
+            var page = PAGES.indexOf(parts[0]) > -1 ? parts[0] : 'presentazione';
+            var section = document.getElementById('pagina-' + page);
+            document.querySelectorAll('.pagina').forEach(function (s) { s.classList.toggle('active', s === section); });
+            document.querySelectorAll('.sidebar-categoria').forEach(function (b) {
+                if (b.dataset.page === page) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+            });
+            if (sidebar.classList.contains('active')) setMenu(false);
+
+            var target = parts[1] && document.getElementById(parts[1]);
+            var behavior = reduceMotion.matches ? 'auto' : 'smooth';
+            if (target) {
+                var next = target.nextElementSibling;
+                if (next) { next.setAttribute('tabindex', '-1'); next.focus({ preventScroll: true }); }
+                setTimeout(function () { target.scrollIntoView({ behavior: behavior, block: 'start' }); }, 80);
+            } else {
+                window.scrollTo(0, 0);
+                if (!initial) { var h = section.querySelector('.sezione-titolo'); if (h) h.focus({ preventScroll: true }); }
+            }
+        }
+        function go(page, anchor) {
+            var h = '#' + page + (anchor ? '/' + anchor : '');
+            if (location.hash === h) route(); else location.hash = h;
+        }
+        document.addEventListener('click', function (e) {
+            var el = e.target.closest('[data-page]');
+            if (!el) return;
+            e.preventDefault();
+            go(el.dataset.page, el.dataset.anchor);
+        });
+        window.addEventListener('hashchange', function () { route(); });
+        route(true);
+
+        /* Dimensione del testo */
+        var SIZES = [90, 100, 115, 130, 150], idx = 1;
+        var minus = document.getElementById('fsMinus'), plus = document.getElementById('fsPlus'), label = document.getElementById('fsLabel');
+        try { var saved = parseInt(localStorage.getItem('fsIdx'), 10); if (saved >= 0 && saved < SIZES.length) idx = saved; } catch (e) {}
+        function applySize() {
+            document.documentElement.style.fontSize = SIZES[idx] + '%';
+            label.textContent = SIZES[idx] + '%';
+            minus.disabled = idx === 0; plus.disabled = idx === SIZES.length - 1;
+            try { localStorage.setItem('fsIdx', idx); } catch (e) {}
+        }
+        minus.addEventListener('click', function () { if (idx > 0) { idx--; applySize(); } });
+        plus.addEventListener('click', function () { if (idx < SIZES.length - 1) { idx++; applySize(); } });
+        applySize();
+    })();
+    </script>
+
+</body>
+</html>
