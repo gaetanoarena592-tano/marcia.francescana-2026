@@ -146,6 +146,25 @@
         .qr-section{background:linear-gradient(160deg,#fbf3e1,#f3e6c9);border-color:#e3cf9f;border-radius:10px}
         .nav-card{background:linear-gradient(180deg,#fffefa,#f8f1e1);border-radius:10px;box-shadow:0 4px 14px var(--shadow)}
         .nav-card:hover{background:linear-gradient(180deg,#fffaf0,#f3e6c9);border-color:#b98b47}
+    
+        /* ===== Pagina Adorazione (liturgia eucaristica) ===== */
+        .rubrica{font-style:italic;color:var(--text-muted);text-align:center}
+        .testo-unico p.rubrica{margin:6px 0 16px}
+        .citazione{margin:16px 0 22px;padding:4px 0 4px 18px;border-left:3px solid var(--cord)}
+        .citazione p:last-child{margin-bottom:0}
+        .testo-unico p a{color:var(--habit);font-weight:600;text-underline-offset:3px}
+        .alterni{margin:8px 0 20px}
+        .alterni li{list-style:none;display:grid;grid-template-columns:5rem 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+        .alterni li:last-child{border-bottom:0}
+        .voce{font-size:.8rem;font-weight:700;letter-spacing:.12em;color:var(--cord-dark);padding-top:.2rem}
+        .alterni li.tutti{display:block;margin-top:12px;padding:16px 18px;border:0;border-left:3px solid #b98b47;border-radius:0 8px 8px 0;background:linear-gradient(90deg,#efdfbf 0%,#f8f0de 100%)}
+        .alterni li.tutti .voce{display:block;margin-bottom:4px}
+        .intenzioni{margin:12px 0 20px;counter-reset:int}
+        .intenzioni li{list-style:none;counter-increment:int;position:relative;padding:12px 0 12px 46px;border-bottom:1px solid var(--line)}
+        .intenzioni li:last-child{border-bottom:0}
+        .intenzioni li::before{content:counter(int);position:absolute;left:0;top:8px;font:700 1.9rem/1 var(--serif);color:var(--cord-dark)}
+        .risposta{display:block;margin-top:6px;font-style:italic;font-weight:600;color:var(--cord-dark)}
+        @media(max-width:480px){.alterni li{grid-template-columns:4.2rem 1fr;gap:8px}}
     </style>
 </head>
 <body>
@@ -191,7 +210,17 @@
                         <li><a href="#canti/canto-sento-la-gioia" data-page="canti" data-anchor="canto-sento-la-gioia">Sento la gioia</a></li>
                     </ul>
                 </li>
-                <li><button type="button" class="sidebar-categoria cat-ador" data-page="adorazione"><span>Adorazione</span></button>
+                <li><button type="button" class="sidebar-categoria cat-ador" data-page="adorazione-eucaristica"><span>Adorazione</span></button>
+                    <ul class="sub-menu">
+                        <li><a href="#adorazione-eucaristica/eucaristia-inizio" data-page="adorazione-eucaristica" data-anchor="eucaristia-inizio">Esposizione e canto iniziale</a></li>
+                        <li><a href="#adorazione-eucaristica/eucaristia-vangelo" data-page="adorazione-eucaristica" data-anchor="eucaristia-vangelo">Lettura evangelica</a></li>
+                        <li><a href="#adorazione-eucaristica/eucaristia-preghiera-semplice" data-page="adorazione-eucaristica" data-anchor="eucaristia-preghiera-semplice">Preghiera semplice</a></li>
+                        <li><a href="#adorazione-eucaristica/eucaristia-fedeli" data-page="adorazione-eucaristica" data-anchor="eucaristia-fedeli">Preghiere dei fedeli</a></li>
+                        <li><a href="#adorazione-eucaristica/eucaristia-affidamento" data-page="adorazione-eucaristica" data-anchor="eucaristia-affidamento">Affidamento a Maria e a San Francesco</a></li>
+                        <li><a href="#adorazione-eucaristica/eucaristia-canto-finale" data-page="adorazione-eucaristica" data-anchor="eucaristia-canto-finale">Canto finale</a></li>
+                    </ul>
+                </li>
+                <li><button type="button" class="sidebar-categoria cat-ador" data-page="adorazione"><span>Canti adorazione</span></button>
                     <ul class="sub-menu">
                         <li><a href="#adorazione/ador-abbracciami" data-page="adorazione" data-anchor="ador-abbracciami">Abbracciami</a></li>
                         <li><a href="#adorazione/ador-adoro-te" data-page="adorazione" data-anchor="ador-adoro-te">Adoro Te</a></li>
@@ -584,12 +613,32 @@
                     <!-- SCATENATE LA GIOIA -->
                     <span id="canto-scatenate" class="ancora"></span>
                     <h2 class="titolo-canto">Scatenate la gioia </h2>
+                    <p>Uscite dalle case, voi che siete chiusi dentro;<br>
+                    venite qui tra noi, qualcosa sta accadendo;<br>
+                    qui non piove, qui c'è solo sole,<br>
+                    fate in fretta, mancate solo voi.</p>
+                    <p>Muovi i piedi tu, tu che stai ascoltando,<br>
+                    e le mani tu, per tenere il tempo;<br>
+                    segui il ritmo, di questa canzone,<br>
+                    tutti pronti, possiamo dare il via...</p>
                     <div class="ritornello">
                         <span class="rit-tag">RIT.</span><br>
-                        Scatenate la gioia, cantate al Signor!<br>
-                        Egli fa cose grandi, grande è il suo amor!<br>
-                        Ci ha donato la vita, la felicità,<br>
-                        scatenate la gioia, cantate con noi!
+                        Scatenate la gioia, oggi qui si fa festa,<br>
+                        dai, cantate con noi, qui la festa siamo noi.
+                    </div>
+                    <p>Non si sente bene qui, qualcuno parla piano,<br>
+                    fatti trascinare tu, non puoi farne a meno;<br>
+                    se non canti, togli il tuo colore,<br>
+                    all'arcobaleno, di questa canzone...</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
+                    </div>
+                    <p>Siamo in tanti qui, a cantare forte,<br>
+                    che la gioia entra, basta aprir le porte;<br>
+                    qui nell'aria, si sente un buon profumo,<br>
+                    se ci stai, non manca più nessuno...</p>
+                    <div class="ritornello">
+                        <span class="rit-tag">RIT.</span>
                     </div>
 
                     <!-- SENTO LA GIOIA -->
@@ -641,7 +690,7 @@
                                 <span class="nav-title">Letture marcia</span>
                             </div>
                         </a>
-                        <a class="nav-card next" href="#adorazione" data-page="adorazione">
+                        <a class="nav-card next" href="#adorazione-eucaristica" data-page="adorazione-eucaristica">
                             <div class="nav-content">
                                 <span class="nav-label">Prossima pagina</span>
                                 <span class="nav-title">Adorazione</span>
@@ -653,9 +702,100 @@
                 </div>
             </section>
 
-            <!-- PAGINA ADORAZIONE -->
-            <section id="pagina-adorazione" class="pagina">
+            <!-- PAGINA ADORAZIONE EUCARISTICA -->
+            <section id="pagina-adorazione-eucaristica" class="pagina">
                 <h1 class="sezione-titolo" tabindex="-1">Adorazione</h1>
+
+                <div class="testo-unico">
+                    <div class="sosta-box">
+                        <strong>ADORAZIONE EUCARISTICA</strong><br>
+                        <strong>Tema: IL PANE SPEZZATO E LA SOLIDARIETÀ</strong>
+                    </div>
+
+                    <!-- ESPOSIZIONE E CANTO INIZIALE -->
+                    <span id="eucaristia-inizio" class="ancora"></span>
+                    <h2 class="titolo-canto">Esposizione e canto iniziale</h2>
+                    <p class="rubrica">Esposizione del Santissimo</p>
+                    <p><strong>Canto iniziale:</strong> <a href="#adorazione/ador-invochiamo" data-page="adorazione" data-anchor="ador-invochiamo">Invochiamo la tua presenza</a></p>
+
+                    <!-- LETTURA EVANGELICA -->
+                    <span id="eucaristia-vangelo" class="ancora"></span>
+                    <h2 class="titolo-canto">Lettura evangelica</h2>
+                    <p class="rubrica">Mt 25, 31.34-40</p>
+                    <p><strong>Dal Vangelo secondo Matteo</strong></p>
+                    <blockquote class="citazione">
+                        <p>«Quando il Figlio dell'uomo verrà nella sua gloria, e tutti gli angeli con lui, siederà sul trono della sua gloria. Allora il Re dirà a quelli che saranno alla sua destra: "Venite, benedetti del Padre mio, ricevete in eredità il regno preparato per voi fin dalla creazione del mondo, perché ho avuto fame e mi avete dato da mangiare, ho avuto sete e mi avete dato da bere, ero straniero e mi avete ospitato, nudo e mi avete vestito, malato e mi avete visitato, ero in carcere e siete venuti a trovarmi".</p>
+                        <p>Allora i giusti gli risponderanno: "Signore, quando ti abbiamo visto affamato e ti abbiamo dato da mangiare, o assetato e ti abbiamo dato da bere? Quando mai ti abbiamo visto straniero e ti abbiamo accolto, o nudo e ti abbiamo vestito? Quando mai ti abbiamo visto malato o in carcere e siamo venuti a visitarti?".</p>
+                        <p>E il Re risponderà loro: "In verità io vi dico: tutto quello che avete fatto a uno solo di questi miei fratelli più piccoli, l'avete fatto a me".»</p>
+                    </blockquote>
+                    <p><strong>Meditazione del sacerdote</strong></p>
+
+                    <!-- PREGHIERA SEMPLICE -->
+                    <span id="eucaristia-preghiera-semplice" class="ancora"></span>
+                    <h2 class="titolo-canto">Preghiera semplice</h2>
+                    <p class="rubrica">Tutti a cori alternati</p>
+                    <ul class="alterni">
+                        <li><span class="voce">CORO 1</span><span>Signore, fa' di me uno strumento della tua pace:</span></li>
+                        <li><span class="voce">CORO 2</span><span>Dove è odio, ch'io porti l'Amore.</span></li>
+                        <li><span class="voce">CORO 1</span><span>Dove è offesa, ch'io porti il Perdono.</span></li>
+                        <li><span class="voce">CORO 2</span><span>Dove è discordia, ch'io porti l'Unione.</span></li>
+                        <li><span class="voce">CORO 1</span><span>Dove è dubbio, ch'io porti la Fede.</span></li>
+                        <li><span class="voce">CORO 2</span><span>Dove è errore, ch'io porti la Verità.</span></li>
+                        <li><span class="voce">CORO 1</span><span>Dove è disperazione, ch'io porti la Speranza.</span></li>
+                        <li><span class="voce">CORO 2</span><span>Dove è tristezza, ch'io porti la Gioia.</span></li>
+                        <li><span class="voce">CORO 1</span><span>Dove sono le tenebre, ch'io porti la Luce.</span></li>
+                        <li class="tutti"><span class="voce">TUTTI</span><span>O Maestro, fa' ch'io non cerchi tanto: ad essere consolato, quanto a consolare; Ad essere compreso, quanto a comprendere; Ad essere amato, quanto ad amare. Poiché è dando, che si riceve; Perdonando, che si è perdonati; Morendo, che si risuscita a Vita Eterna. Amen.</span></li>
+                    </ul>
+                    <p class="rubrica">Momento di silenzio</p>
+
+                    <!-- PREGHIERE DEI FEDELI -->
+                    <span id="eucaristia-fedeli" class="ancora"></span>
+                    <h2 class="titolo-canto">Preghiere dei fedeli</h2>
+                    <p><strong>Preghiamo insieme:</strong> Ascoltaci, o Signore</p>
+                    <ol class="intenzioni">
+                        <li><strong>Per la Chiesa e la nostra Parrocchia Giubilare:</strong> Perché questa Porta Santa non sia un semplice simbolo, ma il segno di una comunità viva, accogliente, capace di farsi grembo di misericordia per ogni uomo e donna che cerca Dio. <span class="risposta">Preghiamo insieme: Ascoltaci, o Signore.</span></li>
+                        <li><strong>Per i poveri, i soli e i dimenticati:</strong> Perché la giornata solidale vissuta oggi non rimanga un evento isolato, ma accenda in noi un fuoco permanente di carità, attenzione e vicinanza verso chi soffre nel nostro paese. <span class="risposta">Preghiamo insieme: Ascoltaci, o Signore.</span></li>
+                        <li><strong>Per le famiglie e i giovani:</strong> Perché sull'esempio di San Francesco sappiano riscoprire la bellezza della semplicità, dell'essenziale e della condivisione, vincendo le insidie dell'egoismo e dell'isolamento digitale. <span class="risposta">Preghiamo insieme: Ascoltaci, o Signore.</span></li>
+                        <li><strong>Per la Pace nel Mondo:</strong> Per tutte le nazioni strappate dalle guerre e dalle ingiustizie, affinché i potenti della terra aprano i cuori al dialogo e al rispetto della dignità di ogni persona. <span class="risposta">Preghiamo insieme: Ascoltaci, o Signore.</span></li>
+                    </ol>
+
+                    <!-- AFFIDAMENTO -->
+                    <span id="eucaristia-affidamento" class="ancora"></span>
+                    <h2 class="titolo-canto">Preghiera di affidamento alla Vergine Maria e a San Francesco</h2>
+                    <p class="rubrica">Tutti insieme</p>
+                    <blockquote class="citazione">
+                        <p>«Maria, Madre dei poveri e Porta del Cielo, e tu, Santo Francesco, araldo di pace e di amore: raccomandiamo a voi la nostra comunità parrocchiale. Voi che avete saputo vedere l'impronta di Dio in ogni creatura, aiutateci a custodire la grazia di questo Giubileo. Custodite le nostre famiglie, benedite i nostri anziani, accompagnate i nostri giovani e riscaldate i cuori di chi ha smesso di sperare. Fa' che al rientro nelle nostre case possiamo essere "altri Francesco", testimoni credibili dell'unica grande solidarietà che salva il mondo: l'Amore di Dio. Amen.»</p>
+                    </blockquote>
+
+                    <!-- CANTO FINALE -->
+                    <span id="eucaristia-canto-finale" class="ancora"></span>
+                    <h2 class="titolo-canto">Canto finale</h2>
+                    <p><a href="#adorazione/ador-resta-qui" data-page="adorazione" data-anchor="ador-resta-qui">Resta qui con noi</a></p>
+
+                    <!-- NAVIGAZIONE PIÈ DI PAGINA -->
+                    <div class="page-nav-container">
+                        <a class="nav-card prev" href="#canti" data-page="canti">
+                            <div class="nav-arrow" aria-hidden="true">←</div>
+                            <div class="nav-content">
+                                <span class="nav-label">Pagina precedente</span>
+                                <span class="nav-title">Canti marcia</span>
+                            </div>
+                        </a>
+                        <a class="nav-card next" href="#adorazione" data-page="adorazione">
+                            <div class="nav-content">
+                                <span class="nav-label">Prossima pagina</span>
+                                <span class="nav-title">Canti adorazione</span>
+                            </div>
+                            <div class="nav-arrow" aria-hidden="true">→</div>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PAGINA CANTI ADORAZIONE -->
+            <section id="pagina-adorazione" class="pagina">
+                <h1 class="sezione-titolo" tabindex="-1">Canti adorazione</h1>
 
                 <div class="testo-unico">
 
@@ -1199,11 +1339,11 @@
 
                     <!-- NAVIGAZIONE PIÈ DI PAGINA -->
                     <div class="page-nav-container">
-                        <a class="nav-card prev" href="#canti" data-page="canti">
+                        <a class="nav-card prev" href="#adorazione-eucaristica" data-page="adorazione-eucaristica">
                             <div class="nav-arrow" aria-hidden="true">←</div>
                             <div class="nav-content">
                                 <span class="nav-label">Pagina precedente</span>
-                                <span class="nav-title">Canti marcia</span>
+                                <span class="nav-title">Adorazione</span>
                             </div>
                         </a>
                         <div></div> <!-- Spaziatore vuoto a destra -->
@@ -1218,7 +1358,7 @@
     <!-- SCRIPT: menu, navigazione con URL condivisibili (#pagina/canto), dimensione testo -->
     <script>
     (function () {
-        var PAGES = ['presentazione', 'letture', 'canti', 'adorazione'];
+        var PAGES = ['presentazione', 'letture', 'canti', 'adorazione-eucaristica', 'adorazione'];
         var sidebar = document.getElementById('sidebar');
         var overlay = document.getElementById('overlay');
         var toggleBtn = document.getElementById('toggleBtn');
